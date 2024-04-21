@@ -82,9 +82,10 @@ fetchBanner().then(async (res) => {
 })
 fetchRecommends().then(async (res) => {
   playlistInfo.value = await res.data.playlists
+  console.log(res);
 })
-fetchNewSong().then((res) => {
-  albumInfo.value = res.data.data.dailySongs.slice(0, 20)
+fetchNewSong().then(async (res) => {
+  albumInfo.value = await res.data.albums.slice(0, 20)
 })
 </script>
 
@@ -147,7 +148,7 @@ fetchNewSong().then((res) => {
               <div class="playlist-pic">
                 <div class="iconfont ear">
                   &#xe66a;
-                  <span class="count">{{ (playlist.subscribedCount / 10000).toFixed(1) + ' 万' }}</span>
+                  <span class="count">{{ (playlist.playCount / 10000).toFixed(1) + ' 万' }}</span>
                 </div>
                 <v-img
                   class="rounded-lg"
@@ -187,7 +188,7 @@ fetchNewSong().then((res) => {
                 width="55"
                 height="55"
                 lazy-src="../assets/netmusic.png"
-                :src="album.al.picUrl"
+                :src="album.picUrl"
               >
                 <template v-slot:placeholder>
                   <div class="d-flex align-center justify-center fill-height">
@@ -199,10 +200,10 @@ fetchNewSong().then((res) => {
             <div class="song__detail">
                 <div class="song__detail__name">{{ album.name }}</div>
                 <div class="song__detail__info">
-                  <span class="song__detail__info__reason" v-if="album.reason">{{
-                    album.reason
+                  <span class="song__detail__info__reason" v-if="album.subType">{{
+                    album.subType
                   }}</span>
-                  <div class="song__detail__info__ar" v-for="artist in album.ar" :key="artist">
+                  <div class="song__detail__info__ar" v-for="artist in album.artists.slice(0, 3)" :key="artist">
                     {{ artist.name }}&nbsp;
                   </div>
                 </div>
@@ -359,7 +360,7 @@ fetchNewSong().then((res) => {
                 position: absolute;
                 top: 2px;
                 left: 5px;
-                width: 60px;
+                width: 100%;
                 font-size: 12px;
                 color: white;
                 z-index: 50;
@@ -403,6 +404,7 @@ fetchNewSong().then((res) => {
           &__detail {
             font-size: 18px;
             flex: 1;
+            width: 200px;
             position: relative;
             &__info {
               display: flex;

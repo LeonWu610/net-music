@@ -68,7 +68,7 @@ watchEffect(() => {
 onMounted(async () => {
   await fetchRateDetail(id).then((res) => {
     playlist.value = res.data.playlist
-    songs.value = res.data.playlist.tracks
+    songs.value = res.data.playlist.tracks.slice(0,20)
     name.value = res.data.playlist.name
     picUrl.value = res.data.playlist.coverImgUrl
     res.data.playlist.tracks.forEach((song) => {
@@ -177,7 +177,7 @@ onMounted(async () => {
 }
 .music-list {
   position: relative;
-  height: 100%;
+  height: 1500px;
   .top {
     position: fixed;
     display: flex;
@@ -200,7 +200,6 @@ onMounted(async () => {
   .rest {
     position: absolute;
     top: 50px;
-    height: 100%;
     .detail {
       display: flex;
       padding: 5px 10px;

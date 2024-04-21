@@ -14,7 +14,7 @@ export async function fetchRecommends () {
 }
 
 export async function fetchNewSong () {
-  return await instance.get('/recommend/songs')
+  return await instance.get('/album/new')
 }
 
 async function fetchSinger () {
