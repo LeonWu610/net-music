@@ -2,7 +2,7 @@ import axios from 'axios'
 import pinyin from 'pinyin'
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://netease-cloud-music-api-drab-eight.vercel.app/'
 })
 
 export async function fetchBanner () {
