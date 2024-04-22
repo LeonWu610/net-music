@@ -55,7 +55,7 @@
           </div>
           <div class="info">
             <div class="name">
-              <h1 class="title">{{ currentSong.songList[currentSong.index] }}</h1>
+              <h1 class="title">{{ currentSong.name }}</h1>
               <h2 class="subtitle">{{ currentSong.singer }}</h2>
             </div>
             <div class="iconfont">

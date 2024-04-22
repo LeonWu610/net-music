@@ -24,7 +24,7 @@ const goBack = () => {
   currentSong.listBtm = '110px'
 }
 
-const PlayAll = () => {  
+const PlayAll = () => {
   currentSong.miniPlayerBtm = '0'
   currentSong.listBtm = '50px'
   currentSong.fullScreen = true
@@ -68,7 +68,7 @@ watchEffect(() => {
 onMounted(async () => {
   await fetchRateDetail(id).then((res) => {
     playlist.value = res.data.playlist
-    songs.value = res.data.playlist.tracks.slice(0,20)
+    songs.value = res.data.playlist.tracks.slice(0, 20)
     name.value = res.data.playlist.name
     picUrl.value = res.data.playlist.coverImgUrl
     res.data.playlist.tracks.forEach((song) => {
@@ -96,50 +96,50 @@ onMounted(async () => {
         <div class="title">歌单</div>
       </div>
       <div class="rest">
-        <div class="detail">
-          <div class="playlist-pic">
-            <div class="iconfont play">
-              &#xe64f;
-              <span class="count">{{
-                (playlist?.subscribedCount / 10000).toFixed(1) + ' 万'
-              }}</span>
+        <div class="wrap">
+          <div class="detail">
+            <div class="playlist-pic">
+              <div class="iconfont play">
+                &#xe64f;
+                <span class="count">{{ (playlist?.playCount / 10000).toFixed(1) + ' 万' }}</span>
+              </div>
+              <v-img
+                class="rounded-lg"
+                width="120"
+                height="120"
+                lazy-src="../assets/netmusic.png"
+                :src="playlist?.coverImgUrl"
+              >
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
             </div>
-            <v-img
-              class="rounded-lg"
-              width="120"
-              height="120"
-              lazy-src="../assets/netmusic.png"
-              :src="playlist?.coverImgUrl"
-            >
-              <template v-slot:placeholder>
-                <div class="d-flex align-center justify-center fill-height">
-                  <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-                </div>
-              </template>
-            </v-img>
-          </div>
-          <div class="info">
-            <div class="name">{{ playlist?.name }}</div>
-            <div class="author">
-              <img :src="playlist?.creator.avatarUrl" />
-              <span>{{ playlist?.creator.nickname }}</span>
-              <span class="text">+关注</span>
+            <div class="info">
+              <div class="name">{{ playlist?.name }}</div>
+              <div class="author">
+                <img :src="playlist?.creator.avatarUrl" />
+                <span>{{ playlist?.creator.nickname }}</span>
+                <span class="text">+关注</span>
+              </div>
             </div>
           </div>
-        </div>
-        <span class="desc">{{ playlist?.description }}</span>
-        <div class="icon">
-          <div class="icon__wrap">
-            <span class="iconfont">&#xe628;</span>
-            {{ playlist?.shareCount }}
-          </div>
-          <div class="icon__wrap">
-            <span class="iconfont">&#xe60a;</span>
-            {{ playlist?.commentCount }}
-          </div>
-          <div class="icon__wrap">
-            <span class="iconfont">&#xe66e;</span>
-            {{ playlist?.subscribedCount }}
+          <span class="desc">{{ playlist?.description }}</span>
+          <div class="icon">
+            <div class="icon__wrap">
+              <span class="iconfont">&#xe628;</span>
+              {{ playlist?.shareCount }}
+            </div>
+            <div class="icon__wrap">
+              <span class="iconfont">&#xe60a;</span>
+              {{ playlist?.commentCount }}
+            </div>
+            <div class="icon__wrap">
+              <span class="iconfont">&#xe66e;</span>
+              {{ playlist?.subscribedCount }}
+            </div>
           </div>
         </div>
         <div class="bottom">
@@ -173,7 +173,6 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .wrapper {
   height: 100vh;
-  background-image: linear-gradient(to bottom, #384592, #ffffff);
 }
 .music-list {
   position: relative;
@@ -189,7 +188,7 @@ onMounted(async () => {
     padding: 5px;
     font-size: 30px;
     color: white;
-    background: linear-gradient(to bottom, #313f91, rgb(61, 76, 162));
+    background: #384592;
     .title {
       flex: 1;
       margin-left: 35vw;
@@ -199,95 +198,102 @@ onMounted(async () => {
   }
   .rest {
     position: absolute;
-    top: 50px;
-    .detail {
-      display: flex;
-      padding: 5px 10px;
-      .playlist-pic {
-        border-radius: 10px;
-        position: relative;
-        margin-right: 10px;
-        .play {
-          display: flex;
-          position: absolute;
-          top: 2px;
-          left: 5px;
-          width: 60px;
-          font-size: 12px;
-          color: white;
-          z-index: 50;
-          .count {
+    top: 40px;
+    .wrap {
+      background-image: linear-gradient(to bottom, #384592, #3846926e);
+      padding-bottom: 30px;
+      .detail {
+        display: flex;
+        padding: 5px 10px;
+        .playlist-pic {
+          border-radius: 10px;
+          position: relative;
+          margin-right: 10px;
+          .play {
+            display: flex;
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 100%;
             font-size: 12px;
-            font-weight: 800;
-            margin: 0 0 0 3px;
+            color: white;
+            z-index: 50;
+            .count {
+              font-size: 12px;
+              font-weight: 800;
+              margin: 0 0 0 3px;
+            }
+          }
+        }
+        .info {
+          color: white;
+          .name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+          }
+          .author {
+            display: flex;
+            align-items: center;
+            img {
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              margin-right: 5px;
+            }
+            span {
+              font-size: 15px;
+            }
+            .text {
+              margin: 2px 0 0 6px;
+              font-size: 10px;
+              background-color: #80808044;
+              padding: 2px 5px;
+              border-radius: 20px;
+            }
           }
         }
       }
-      .info {
-        color: white;
-        .name {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-        .author {
+      .desc {
+        margin: 5px 10px;
+        font-size: 15px;
+        color: rgb(227, 227, 227);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+      }
+      .icon {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px;
+        color: rgb(249, 249, 249);
+        font-size: 14px;
+        font-weight: 700;
+        &__wrap {
+          width: 128px;
           display: flex;
           align-items: center;
-          img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 5px;
-          }
-          span {
-            font-size: 15px;
-          }
-          .text {
-            margin: 2px 0 0 6px;
-            font-size: 10px;
-            background-color: #80808044;
-            padding: 2px 5px;
-            border-radius: 20px;
+          justify-content: center;
+          background-color: #ffffff34;
+          border-radius: 20px;
+          padding: 3px 0;
+          .iconfont {
+            width: 26px;
+            font-size: 22px;
           }
         }
-      }
-    }
-    .desc {
-      margin: 5px 10px;
-      font-size: 15px;
-      color: rgb(227, 227, 227);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 1;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-    }
-    .icon {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px;
-      color: rgb(249, 249, 249);
-      font-size: 14px;
-      font-weight: 700;
-      &__wrap {
-        width: 128px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #ffffff34;
-        border-radius: 20px;
-        padding: 3px 0;
-        .iconfont {
-          width: 26px;
-          font-size: 22px;
+        &__wrap:last-child {
+          background-color: rgb(242, 63, 63);
         }
-      }
-      &__wrap:last-child {
-        background-color: rgb(242, 63, 63);
       }
     }
     .bottom {
-      margin: 20px 10px;
+      margin-top: -15px;
+      padding: 20px 10px;
+      border-radius: 20px 20px 0 0;
+      background: #ffffff;
       .play {
         margin-bottom: 20px;
         display: flex;

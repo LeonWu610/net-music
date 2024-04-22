@@ -48,6 +48,9 @@ onMounted(() => {
 const closeError = () => {
   showAlert.value = !showAlert.value
 }
+const handleSearchClick = () => {
+  router.push({ path: '/search' })
+}
 const handlePlaylistClick = (id) => {
   router.push({ path: `/playlist/${id}` })
   currentSong.miniPlayerBtm = '0'
@@ -55,25 +58,24 @@ const handlePlaylistClick = (id) => {
 const handleSongClick = async (album) => {
   currentSong.songList.push(album.name)
   currentSong.name = album.name
-  currentSong.pic = album.al.picUrl
-  album.ar.forEach((artist) => {
+  currentSong.pic = album.picUrl
+  currentSong.id = album.id
+  album.artists.forEach((artist) => {
     currentSong.singer = artist.name + ',' + currentSong.singer
   })
   await fetchSongUrl(album.id).then((res) => {
-    console.log(res);
     if (res.data.data[0].url === null) {
       showAlert.value = true
     } else {
-    currentSong.urlList.push(res.data.data[0].url)
+    currentSong.urlList.push(res?.data?.data[0]?.url)
     currentSong.fullScreen = true
     currentSong.playingState = true
     }
-  })
+  }).catch(showAlert.value = true)
   await fetchLyric(currentSong).then((res) => {
     console.log(res);
     currentSong.lyric = ''
     // currentSong.lyric = res.data.lrc.lyric
-    console.log(currentSong.lyric)
   })
 }
 
@@ -82,7 +84,6 @@ fetchBanner().then(async (res) => {
 })
 fetchRecommends().then(async (res) => {
   playlistInfo.value = await res.data.playlists
-  console.log(res);
 })
 fetchNewSong().then(async (res) => {
   albumInfo.value = await res.data.albums.slice(0, 20)
@@ -215,7 +216,7 @@ fetchNewSong().then(async (res) => {
     </div>
     <div class="top" :style="{ backgroundColor: topBackgroundColor }">
       <div class="tools iconfont">&#xe62b;</div>
-      <div class="search" :style="{ backgroundColor: inputBackgroundColor }">
+      <div class="search" :style="{ backgroundColor: inputBackgroundColor }" @click="handleSearchClick">
         <span class="iconfont">&#xe6bc;</span>
         <input type="text" placeholder="请输入搜索关键字..." />
       </div>
